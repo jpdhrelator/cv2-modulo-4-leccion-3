@@ -580,12 +580,12 @@ Cantidad: 4</pre>
   <!-- RETO 6 -->
   <section class="reto" id="r6">
     <h3>Reto 6 · El detective de usuarios <span class="badge b2">Nivel 2</span></h3>
-    <p class="lead">Poder a entrenar: buscar con <code class="inline">includes</code>, <code class="inline">indexOf</code> y <code class="inline">find</code>.</p>
+    <p class="lead">Poder a entrenar: buscar con <code class="inline">includes</code> e <code class="inline">indexOf</code>, y recorrer con <code class="inline">for</code> deteniéndote con <code class="inline">break</code>.</p>
     <div class="mision">
       <ol>
         <li>¿Existe el usuario <code class="inline">"beto_99"</code>? Muestra <strong>true / false</strong>.</li>
         <li>¿En qué <strong>posición</strong> está <code class="inline">"carla_07"</code>?</li>
-        <li>Encuentra y muestra el <strong>primer</strong> usuario que contenga el texto <code class="inline">"_0"</code>.</li>
+        <li>Recorre la lista con un <code class="inline">for</code> y, en el <strong>primer</strong> usuario que contenga el texto <code class="inline">"_0"</code>, muéstralo y <strong>detén el ciclo con <code class="inline">break</code></strong>.</li>
       </ol>
     </div>
     <details class="hint">
@@ -593,8 +593,8 @@ Cantidad: 4</pre>
       <ul>
         <li>"¿Existe?" (true/false) → <code class="inline">includes</code>.</li>
         <li>"¿En qué posición?" → <code class="inline">indexOf</code>.</li>
-        <li>"Encuentra el primero que cumple una condición" → <code class="inline">find</code>.</li>
-        <li>Para ver si un texto contiene a otro, también sirve <code class="inline">.includes("_0")</code> sobre el texto.</li>
+        <li>Para el punto 3: recorre con <code class="inline">for</code> y, dentro, usa un <code class="inline">if</code> para revisar cada usuario. Cuando encuentres el que cumple, muéstralo y escribe <code class="inline">break</code> para frenar el ciclo.</li>
+        <li>Para saber si un texto contiene a otro, usa <code class="inline">usuarios[i].includes("_0")</code>.</li>
       </ul>
     </details>
     <div class="starter">
@@ -604,7 +604,7 @@ Cantidad: 4</pre>
 // Tu tarea (resuélvela en este archivo):
 // 1) ¿Existe "beto_99"?  (true / false)
 // 2) ¿Posición de "carla_07"?
-// 3) Primer usuario que contenga "_0"</pre>
+// 3) Con un for + break, muestra el PRIMER usuario que contenga "_0"</pre>
     </div>
     <div class="goal">
       <pre>¿Existe beto_99?: true
