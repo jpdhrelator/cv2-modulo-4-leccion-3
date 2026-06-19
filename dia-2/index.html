@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Actividad de repaso para alumnos: Arreglos, métodos, for, ciclos anidados, matrices, while y do/while en JavaScript. Módulo 4 · Lección 3. 9 mini retos + reto final integrador. Se entrega en archivos .js publicados en GitHub Pages." />
+<title>🏅 Arcade del Código · Repaso Final · Arreglos y Ciclos</title>
+<style>
+  /* ============================================================
+     ACTIVIDAD DE REPASO — Tema "aula clara". Cada reto muestra su
+     PUNTO DE PARTIDA para copiar al archivo .js del alumno. No hay
+     soluciones: solo la misión, pistas opcionales y resultado esperado.
+     ============================================================ */
+  :root {
+    --bg: #f5f7fb; --paper: #ffffff; --ink: #14223b; --ink-soft: #4a5a76;
+    --brand: #2563eb; --brand-2: #7c3aed; --accent: #0ea5a4;
+    --warn: #b45309; --warn-bg: #fff7ed; --ok: #15803d; --ok-bg: #f0fdf4;
+    --code-bg: #0f172a; --code-ink: #e2e8f0; --code-green: #6ee7b7;
+    --code-blue: #7dd3fc; --code-gray: #64748b; --border: #dbe3ee; --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.7; font-size:18px; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:960px; margin:0 auto; padding:32px 24px 96px; }
+
+  header.hero { background:linear-gradient(135deg, #0f172a, var(--brand)); color:#fff; border-radius:20px; padding:44px 40px; margin-bottom:16px; }
+  header.hero .kicker { text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; opacity:.9; margin:0 0 12px; }
+  header.hero h1 { margin:0 0 12px; font-size:clamp(1.8rem,4.5vw,2.8rem); line-height:1.1; }
+  header.hero p { margin:0; font-size:1.1rem; opacity:.95; max-width:760px; }
+
+  .rules { background:var(--paper); border:1px solid var(--border); border-radius:var(--radius); padding:24px 28px; margin-bottom:40px; }
+  .rules h2 { margin:0 0 14px; font-size:1rem; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-soft); }
+  .rules ol { margin:0; padding-left:22px; }
+  .rules li { margin:8px 0; }
+  .rules .progress { margin-top:18px; padding-top:16px; border-top:1px dashed var(--border); font-weight:600; color:var(--brand-2); }
+
+  /* ---------- SETUP / ENTREGA ---------- */
+  .setup { background:linear-gradient(180deg,#ffffff,#eff6ff); border:1px solid #bae6fd; border-left:6px solid var(--brand); border-radius:var(--radius); padding:28px 32px; margin-bottom:16px; }
+  .setup h2 { margin:0 0 10px; font-size:1.45rem; color:var(--ink); }
+  .setup > p { margin:10px 0; }
+  .setup h3 { margin:28px 0 8px; font-size:1.1rem; color:var(--brand); display:flex; align-items:center; gap:10px; }
+  .setup h3 .step { background:var(--brand); color:#fff; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.9rem; flex-shrink:0; }
+  .setup ol, .setup ul { padding-left:24px; margin:8px 0; }
+  .setup li { margin:7px 0; }
+  .setup pre { background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:16px 18px; margin:10px 0; overflow-x:auto; font-family:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace; font-size:.88rem; line-height:1.6; white-space:pre; }
+  .setup pre.tree { color:var(--code-blue); }
+  .setup .opt { background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:4px 18px 14px; margin:12px 0; }
+  .setup .opt h4 { margin:14px 0 6px; font-size:.98rem; color:var(--ink); }
+  .note-box { background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:10px; padding:12px 18px; margin:14px 0; font-size:.92rem; }
+  .note-box::before { content:"⚠️ "; font-weight:700; }
+
+  .part-title { display:flex; align-items:center; gap:14px; margin:56px 0 8px; padding-bottom:14px; border-bottom:3px solid var(--brand-2); flex-wrap:wrap; }
+  .part-title .pill { background:var(--brand-2); color:#fff; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; padding:6px 14px; border-radius:999px; }
+  .part-title h2 { margin:0; font-size:1.6rem; }
+
+  section.reto { background:var(--paper); border:1px solid var(--border); border-radius:var(--radius); padding:30px 32px; margin-top:26px; box-shadow:0 1px 3px rgba(20,34,59,.04); transition:border-color .2s ease, box-shadow .2s ease; }
+  section.reto:has(.done input:checked) { border-color:var(--ok); box-shadow:0 0 0 2px rgba(21,128,61,.18); }
+  section.reto h3 { margin:0 0 6px; font-size:1.35rem; color:var(--ink); }
+  section.reto .lead { color:var(--ink-soft); margin:0 0 16px; }
+
+  .badge { display:inline-block; font-size:.7rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:4px 10px; border-radius:999px; margin-left:10px; vertical-align:middle; }
+  .badge.b1{ background:#dcfce7; color:#166534; }
+  .badge.b2{ background:#fef9c3; color:#854d0e; }
+  .badge.b3{ background:#fee2e2; color:#991b1b; }
+  .badge.final{ background:#ede9fe; color:#5b21b6; }
+
+  .mision { background:#eff6ff; border-left:5px solid var(--brand); border-radius:10px; padding:14px 22px 16px; margin:16px 0; }
+  .mision::before { content:"🎯 Tu misión"; display:block; font-weight:700; color:var(--brand); margin-bottom:6px; }
+  .mision ol { margin:6px 0 0; padding-left:22px; }
+  .mision li { margin:6px 0; }
+  .mision p { margin:6px 0; }
+
+  details.hint { background:var(--warn-bg); border:1px solid #fed7aa; border-radius:10px; padding:0 18px; margin:16px 0; }
+  details.hint summary { cursor:pointer; font-weight:700; color:var(--warn); padding:13px 0; list-style:none; }
+  details.hint summary::-webkit-details-marker { display:none; }
+  details.hint summary::before { content:"💡 "; }
+  details.hint[open] summary { border-bottom:1px dashed #fed7aa; }
+  details.hint ul { margin:12px 0 16px; padding-left:22px; }
+  details.hint li { margin:7px 0; }
+
+  code.inline { background:#eef2f7; color:#b91c63; padding:2px 7px; border-radius:6px; font-family:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace; font-size:.9em; }
+
+  /* ---------- BARRA DE NOMBRE DE ARCHIVO ---------- */
+  .lab-head { display:flex; align-items:center; gap:14px; background:#1e293b; padding:10px 16px; }
+  .lab-head .dots { display:flex; gap:7px; }
+  .lab-head .dots span { width:12px; height:12px; border-radius:50%; display:inline-block; }
+  .lab-head .dots span:nth-child(1){ background:#ff5f56; }
+  .lab-head .dots span:nth-child(2){ background:#ffbd2e; }
+  .lab-head .dots span:nth-child(3){ background:#27c93f; }
+  .lab-head .fname { color:#94a3b8; font-size:.8rem; font-family:"SF Mono",Menlo,monospace; }
+
+  /* ---------- BLOQUE PUNTO DE PARTIDA (solo lectura) ---------- */
+  .starter { margin:18px 0; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .starter .lab-head .fname::before { content:"📁 "; }
+  .starter pre.code { margin:0; background:var(--code-bg); color:var(--code-ink); padding:18px 20px; overflow-x:auto; font-family:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace; font-size:.95rem; line-height:1.6; tab-size:2; white-space:pre; }
+
+  /* ---------- RESULTADO ESPERADO ---------- */
+  .goal { background:#f5f3ff; border-left:5px solid var(--brand-2); border-radius:10px; padding:14px 22px; margin:16px 0; }
+  .goal::before { content:"✅ Deberías ver algo así"; display:block; font-weight:700; color:var(--brand-2); margin-bottom:6px; }
+  .goal pre { margin:6px 0 0; background:#ffffff; border:1px solid #ddd6fe; border-radius:8px; padding:12px 14px; overflow-x:auto; font-family:"SF Mono",Menlo,monospace; font-size:.9rem; color:#4c1d95; line-height:1.5; }
+  .goal .nota { font-size:.82rem; color:var(--ink-soft); margin:10px 0 0; }
+
+  /* ---------- CHECK "LOGRADO" ---------- */
+  label.done { display:inline-flex; align-items:center; gap:9px; margin-top:16px; font-weight:600; color:var(--ink-soft); cursor:pointer; user-select:none; }
+  label.done input { width:18px; height:18px; accent-color:var(--ok); cursor:pointer; }
+  section.reto:has(.done input:checked) label.done { color:var(--ok); }
+  label.done .txt-on { display:none; }
+  section.reto:has(.done input:checked) label.done .txt-off { display:none; }
+  section.reto:has(.done input:checked) label.done .txt-on { display:inline; }
+
+  /* ---------- CHECKLIST DE ENTREGA ---------- */
+  .checklist { background:var(--ok-bg); border:1px solid #bbf7d0; border-left:6px solid var(--ok); border-radius:var(--radius); padding:26px 30px; margin-top:34px; }
+  .checklist h2 { margin:0 0 6px; font-size:1.35rem; color:var(--ink); }
+  .checklist > p { margin:0 0 14px; color:var(--ink-soft); font-size:.95rem; }
+  .checklist label { display:flex; align-items:flex-start; gap:11px; margin:10px 0; cursor:pointer; }
+  .checklist input { width:18px; height:18px; margin-top:4px; accent-color:var(--ok); cursor:pointer; flex-shrink:0; }
+
+  footer { text-align:center; color:var(--ink-soft); font-size:.9rem; margin-top:64px; }
+  a.back-top { color:var(--brand); text-decoration:none; font-size:.85rem; }
+
+  @media (max-width:640px){ body{font-size:16px;} .wrap{padding:20px 14px 64px;} section.reto{padding:22px 18px;} }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <p class="kicker">Módulo 4 · Lección 03 · Actividad de repaso</p>
+    <h1>🏅 Repaso Final: Arreglos y Ciclos</h1>
+    <p>Junta TODO lo de la lección: <strong>arreglos y sus métodos</strong>, el ciclo <code style="color:#fff">for</code>, los <strong>ciclos anidados</strong> sobre <strong>matrices</strong>, y <code style="color:#fff">while</code> / <code style="color:#fff">do/while</code>. Resuelve los 9 mini retos y el <strong>Jefe Final</strong> en archivos <code style="color:#fff">.js</code>, súbelos a <strong>GitHub</strong> y publícalos en <strong>GitHub Pages</strong>.</p>
+  </header>
+
+  <!-- ===================== REGLAS ===================== -->
+  <div class="rules">
+    <h2>📜 Cómo trabajar cada reto</h2>
+    <ol>
+      <li><strong>Lee la misión</strong>: dice QUÉ tienes que lograr (no el cómo).</li>
+      <li><strong>Copia el "punto de partida"</strong> (el bloque de código) a tu archivo <code class="inline">.js</code> correspondiente.</li>
+      <li><strong>Resuélvelo ahí</strong> con <code class="inline">console.log</code>. Para ver el resultado, abre tu página y presiona <code class="inline">F12</code> → pestaña <strong>Console</strong>.</li>
+      <li><strong>Compara</strong> con el bloque <em>"Deberías ver algo así"</em>. ¿Coincide? ¡Subiste de nivel!</li>
+      <li><strong>¿Atascado?</strong> Recién ahí abre la pista 💡. Primero inténtalo solo.</li>
+      <li>Marca <strong>"¡Misión cumplida!"</strong> cuando lo logres. La tarjeta se pondrá verde.</li>
+    </ol>
+    <p class="progress">🏅 Progreso: <span id="contador">0</span> / 10 misiones cumplidas</p>
+  </div>
+
+  <!-- ===================== SETUP / ENTREGA ===================== -->
+  <div class="setup">
+    <h2>🚀 Arma y entrega tu proyecto</h2>
+    <p>Como siempre, esta actividad se entrega como un sitio en <strong>GitHub Pages</strong>. Sigue estos 5 pasos:</p>
+
+    <h3><span class="step">1</span> Crea tu carpeta con esta estructura</h3>
+    <pre class="tree">repaso-arreglos-ciclos/
+├── index.html        ← página que carga tus ejercicios
+├── reto-1.js
+├── reto-2.js
+├── reto-3.js
+├── reto-4.js
+├── reto-5.js
+├── reto-6.js
+├── reto-7.js
+├── reto-8.js
+├── reto-9.js
+└── liga-final.js     ← el Jefe Final</pre>
+
+    <h3><span class="step">2</span> Copia este index.html base</h3>
+    <p>Pégalo tal cual en tu <code class="inline">index.html</code>. Carga todos tus archivos <code class="inline">.js</code>.</p>
+    <pre class="copyme">&lt;!DOCTYPE html&gt;
+&lt;html lang="es-CL"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;Repaso · Arreglos y Ciclos&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;🏅 Repaso: Arreglos y Ciclos&lt;/h1&gt;
+  &lt;p&gt;Abre la consola (tecla F12 → pestaña Console) para ver los resultados.&lt;/p&gt;
+
+  &lt;!-- type="module" hace que cada archivo tenga su propio espacio:
+       así las variables de un reto NO chocan con las de otro --&gt;
+  &lt;script type="module" src="reto-1.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-2.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-3.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-4.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-5.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-6.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-7.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-8.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="reto-9.js"&gt;&lt;/script&gt;
+  &lt;script type="module" src="liga-final.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <div class="note-box">Para probar en tu computador, abre <code class="inline">index.html</code> con la extensión <strong>Live Server</strong> de VS Code (clic derecho → <em>Open with Live Server</em>). En GitHub Pages funciona directo.</div>
+
+    <h3><span class="step">3</span> Resuelve cada reto en su archivo .js</h3>
+    <p>En cada reto tienes su <strong>punto de partida</strong>: cópialo a su archivo y escribe ahí tu solución con <code class="inline">console.log</code>. Mira los resultados con <code class="inline">F12</code> → <strong>Console</strong>.</p>
+
+    <h3><span class="step">4</span> Sube tu carpeta a GitHub</h3>
+    <div class="opt">
+      <h4>Opción A · Desde la web (más simple)</h4>
+      <ol>
+        <li>Entra a <code class="inline">github.com</code> e inicia sesión.</li>
+        <li>Arriba a la derecha: <strong>+</strong> → <strong>New repository</strong>. Nombre: <code class="inline">repaso-arreglos-ciclos</code>, marca <strong>Public</strong> y créalo.</li>
+        <li>En el repo: <strong>Add file</strong> → <strong>Upload files</strong>, arrastra TODOS tus archivos y haz <strong>Commit changes</strong>.</li>
+      </ol>
+    </div>
+    <div class="opt">
+      <h4>Opción B · Con Git (terminal)</h4>
+      <pre class="copyme">git init
+git add .
+git commit -m "repaso arreglos y ciclos"
+git branch -M main
+git remote add origin https://github.com/TU-USUARIO/repaso-arreglos-ciclos.git
+git push -u origin main</pre>
+    </div>
+
+    <h3><span class="step">5</span> Publica en GitHub Pages</h3>
+    <ol>
+      <li>En tu repo: <strong>Settings</strong> → <strong>Pages</strong>.</li>
+      <li><strong>Source</strong>: <em>Deploy from a branch</em> · Branch: <strong>main</strong> · <strong>/ (root)</strong> → <strong>Save</strong>.</li>
+      <li>Espera 1–2 min y copia tu enlace: <code class="inline">https://TU-USUARIO.github.io/repaso-arreglos-ciclos/</code></li>
+      <li>Ábrelo, presiona <code class="inline">F12</code> → <strong>Console</strong>. <strong>Ese enlace es tu entrega.</strong></li>
+    </ol>
+  </div>
+
+  <!-- ============================================================
+       PARTE 1 — MINI RETOS
+       ============================================================ -->
+  <div class="part-title">
+    <span class="pill">Repaso</span>
+    <h2>Mini retos</h2>
+  </div>
+
+  <!-- RETO 1 -->
+  <section class="reto" id="r1">
+    <h3>Reto 1 · El cajón de frutas <span class="badge b1">Arreglos</span></h3>
+    <p class="lead">Repaso de ayer: crear, agregar, buscar y contar en un arreglo.</p>
+    <div class="mision">
+      <ol>
+        <li>Agrega <code class="inline">"mango"</code> al final del arreglo.</li>
+        <li>Pregunta si el cajón <strong>incluye</strong> <code class="inline">"pera"</code> (true / false).</li>
+        <li>Muestra <strong>cuántas</strong> frutas hay.</li>
+        <li>Muestra la <strong>primera</strong> y la <strong>última</strong> (la última con <code class="inline">.length</code>).</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>"Al final" → <code class="inline">push</code>. "¿Incluye?" → <code class="inline">includes</code>.</li>
+        <li>La última posición siempre es <code class="inline">.length - 1</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-1.js — punto de partida</span></div>
+<pre class="code">let cajon = ["manzana", "pera", "kiwi"];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Agrega "mango" al final
+// 2) ¿Incluye "pera"? (true / false)
+// 3) ¿Cuántas frutas hay?
+// 4) Muestra la primera y la última (usa .length)</pre>
+    </div>
+    <div class="goal">
+      <pre>Cajón: [ "manzana", "pera", "kiwi", "mango" ]
+¿Hay pera?: true
+Total: 4
+Primera: manzana | Última: mango</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 2 -->
+  <section class="reto" id="r2">
+    <h3>Reto 2 · Transformar y filtrar <span class="badge b2">map y filter</span></h3>
+    <p class="lead">Repaso de ayer: <code class="inline">map</code> crea un arreglo nuevo; <code class="inline">filter</code> se queda con los que cumplen.</p>
+    <div class="mision">
+      <ol>
+        <li>Crea un arreglo nuevo con cada número <strong>multiplicado por 10</strong>.</li>
+        <li>Crea otro arreglo solo con los números <strong>mayores a 5</strong>.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Transformar cada elemento → <code class="inline">map</code>.</li>
+        <li>Quedarte solo con algunos → <code class="inline">filter</code> con la condición <code class="inline">n &gt; 5</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-2.js — punto de partida</span></div>
+<pre class="code">let numeros = [3, 8, 1, 6, 10, 4];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Arreglo nuevo con cada número x10
+// 2) Arreglo nuevo solo con los mayores a 5</pre>
+    </div>
+    <div class="goal">
+      <pre>Por 10: [ 30, 80, 10, 60, 100, 40 ]
+Mayores a 5: [ 8, 6, 10 ]</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 3 -->
+  <section class="reto" id="r3">
+    <h3>Reto 3 · Las cuentas del mes <span class="badge b2">reduce</span></h3>
+    <p class="lead">Repaso de ayer: acumular todo un arreglo en un solo valor.</p>
+    <div class="mision">
+      <ol>
+        <li>Calcula el <strong>total</strong> de gastos.</li>
+        <li>Calcula el <strong>promedio</strong>.</li>
+      </ol>
+      <p>Puedes usar <code class="inline">reduce</code> o un <code class="inline">for</code> con acumulador.</p>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Con reduce: <code class="inline">gastos.reduce((acum, g) =&gt; acum + g, 0)</code>.</li>
+        <li>El promedio es el total dividido por <code class="inline">gastos.length</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-3.js — punto de partida</span></div>
+<pre class="code">let gastos = [1200, 3400, 800, 2600];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Calcula el total de gastos
+// 2) Calcula el promedio</pre>
+    </div>
+    <div class="goal">
+      <pre>Total: 8000
+Promedio: 2000</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 4 -->
+  <section class="reto" id="r4">
+    <h3>Reto 4 · Ordenar de menor a mayor <span class="badge b2">sort</span></h3>
+    <p class="lead">Repaso de ayer: ordenar números (¡con cuidado de la trampa del <code class="inline">sort</code>!).</p>
+    <div class="mision">
+      <ol>
+        <li>Ordena las edades de <strong>menor a mayor</strong>.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li><code class="inline">sort()</code> a secas ordena como TEXTO y se equivoca con números.</li>
+        <li>Para números, pásale la comparación: <code class="inline">sort((a, b) =&gt; a - b)</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-4.js — punto de partida</span></div>
+<pre class="code">let edades = [30, 5, 12, 8, 25];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Ordénalas de menor a mayor (¡ojo con el sort de números!)</pre>
+    </div>
+    <div class="goal">
+      <pre>Ordenadas: [ 5, 8, 12, 25, 30 ]</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 5 -->
+  <section class="reto" id="r5">
+    <h3>Reto 5 · Pasar lista <span class="badge b1">for</span></h3>
+    <p class="lead">Repaso: recorrer un arreglo con un <code class="inline">for</code> simple usando el índice.</p>
+    <div class="mision">
+      <ol>
+        <li>Recorre la lista de alumnos con un <code class="inline">for</code>.</li>
+        <li>Muestra <strong>"N° N: nombre"</strong> de cada uno, donde N empieza en <strong>1</strong> (no en 0).</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Estructura: <code class="inline">for (let i = 0; i &lt; alumnos.length; i++) { ... }</code></li>
+        <li>El índice <code class="inline">i</code> arranca en 0, pero al mostrar usa <code class="inline">i + 1</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-5.js — punto de partida</span></div>
+<pre class="code">let alumnos = ["Sofía", "Mateo", "Valentina", "Tomás"];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Recorre con un for y muestra "N° N: nombre"
+// 2) La numeración debe empezar en 1</pre>
+    </div>
+    <div class="goal">
+      <pre>N° 1: Sofía
+N° 2: Mateo
+N° 3: Valentina
+N° 4: Tomás</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 6 -->
+  <section class="reto" id="r6">
+    <h3>Reto 6 · Recorrer una matriz <span class="badge b3">for anidado</span></h3>
+    <p class="lead">Repaso de hoy: un ciclo dentro de otro para visitar toda una matriz.</p>
+    <div class="mision">
+      <ol>
+        <li>Con <code class="inline">for</code> anidado, muestra cada posición <code class="inline">[fila][columna]</code> y su valor.</li>
+        <li>Calcula la <strong>suma</strong> de TODOS los números de la matriz.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>El for externo recorre filas (<code class="inline">matriz.length</code>); el interno, columnas (<code class="inline">matriz[f].length</code>).</li>
+        <li>El acumulador de la suma va <strong>fuera</strong> de los dos for, en 0.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-6.js — punto de partida</span></div>
+<pre class="code">let matriz = [
+  [1, 2, 3],
+  [4, 5, 6]
+];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Muestra cada [fila][columna] = valor (for anidado)
+// 2) Calcula la suma de todos los números</pre>
+    </div>
+    <div class="goal">
+      <pre>[0][0] = 1
+[0][1] = 2
+[0][2] = 3
+[1][0] = 4
+[1][1] = 5
+[1][2] = 6
+Suma total: 21</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 7 -->
+  <section class="reto" id="r7">
+    <h3>Reto 7 · Buscar en el mapa <span class="badge b3">for anidado + if</span></h3>
+    <p class="lead">Repaso de hoy: recorrer una matriz y, con un <code class="inline">if</code>, encontrar algo.</p>
+    <div class="mision">
+      <ol>
+        <li>Recorre el mapa con <code class="inline">for</code> anidado.</li>
+        <li>Cuando encuentres la estrella <code class="inline">"⭐"</code>, muestra en qué <strong>fila</strong> y <strong>columna</strong> está.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Dentro de los dos <code class="inline">for</code>, usa un <code class="inline">if</code>: <code class="inline">if (mapa[f][c] === "⭐") { ... }</code></li>
+        <li>Las variables <code class="inline">f</code> y <code class="inline">c</code> ya son la fila y la columna.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-7.js — punto de partida</span></div>
+<pre class="code">let mapa = [
+  ["🌿", "🌿", "⭐"],
+  ["🌿", "🌿", "🌿"]
+];
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Recorre el mapa con for anidado
+// 2) Muestra la fila y columna donde está la "⭐"</pre>
+    </div>
+    <div class="goal">
+      <pre>⭐ encontrada en fila 0, columna 2</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 8 -->
+  <section class="reto" id="r8">
+    <h3>Reto 8 · La pelota que rebota <span class="badge b3">while</span></h3>
+    <p class="lead">Repaso de hoy: <code class="inline">while</code> para repetir sin saber cuántas veces.</p>
+    <div class="mision">
+      <p>Una pelota cae desde <strong>80 cm</strong>. En cada rebote sube a la <strong>mitad</strong> de la altura anterior.</p>
+      <ol>
+        <li>Mientras la altura sea <strong>10 o más</strong>, cuenta cada rebote y muestra a qué altura llega.</li>
+        <li>Al final, muestra el <strong>total de rebotes</strong>.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Condición: <code class="inline">while (altura &gt;= 10) { ... }</code>.</li>
+        <li>Dentro: divide la altura entre 2 (<code class="inline">altura = altura / 2</code>) y suma 1 a un contador de rebotes.</li>
+        <li>Sin esa división, la altura nunca baja → bucle infinito.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-8.js — punto de partida</span></div>
+<pre class="code">let altura = 80;
+let rebotes = 0;
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Mientras la altura sea >= 10, cuenta el rebote
+//    y muestra la nueva altura (la mitad de la anterior)
+// 2) Muestra el total de rebotes</pre>
+    </div>
+    <div class="goal">
+      <pre>Rebote 1: altura 40
+Rebote 2: altura 20
+Rebote 3: altura 10
+Rebote 4: altura 5
+Total de rebotes: 4</pre>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- RETO 9 -->
+  <section class="reto" id="r9">
+    <h3>Reto 9 · La contraseña <span class="badge b3">do/while</span></h3>
+    <p class="lead">Repaso de hoy: <code class="inline">do/while</code> prueba PRIMERO y revisa DESPUÉS (al menos una vez).</p>
+    <div class="mision">
+      <p>La clave correcta es <code class="inline">"abc123"</code>. Tienes una lista de intentos.</p>
+      <ol>
+        <li>Con <code class="inline">do/while</code>, prueba cada intento y muéstralo (con ✅ si acierta, ❌ si no).</li>
+        <li>Detente al acertar <strong>o</strong> al quedarte sin intentos.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li>Estructura: <code class="inline">do { ... } while (condición)</code>.</li>
+        <li>Para no quedar en bucle infinito, la condición lleva dos frenos: que NO haya acertado <strong>y</strong> que aún queden intentos (<code class="inline">i &lt; intentos.length</code>).</li>
+        <li>Compara con <code class="inline">===</code> contra <code class="inline">claveCorrecta</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">reto-9.js — punto de partida</span></div>
+<pre class="code">let claveCorrecta = "abc123";
+let intentos = ["1234", "hola", "abc123"];
+let i = 0;
+let acerto = false;
+
+// Tu tarea (resuélvela en este archivo):
+// 1) Con do/while, prueba cada intento y muéstralo (✅ / ❌)
+// 2) Detente al acertar o cuando se acaben los intentos</pre>
+    </div>
+    <div class="goal">
+      <pre>Intento: 1234 ❌
+Intento: hola ❌
+Intento: abc123 ✅
+🔓 Acceso concedido</pre>
+      <p class="nota">Si nunca acierta, deberías mostrar un mensaje de acceso denegado.</p>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Lo lograste? Márcalo aquí</span><span class="txt-on">✅ ¡Misión cumplida!</span></label>
+  </section>
+
+  <!-- ============================================================
+       PARTE 2 — JEFE FINAL
+       ============================================================ -->
+  <div class="part-title">
+    <span class="pill">Jefe Final</span>
+    <h2>El gran reto integrador</h2>
+  </div>
+
+  <!-- RETO 10 — FINAL -->
+  <section class="reto" id="rf">
+    <h3>🏆 Reto 10 · La Liga de Equipos <span class="badge final">Jefe Final</span></h3>
+    <p class="lead">Junta TODO: arreglos, métodos, <code class="inline">for</code> anidado, matrices, acumulador, <code class="inline">filter</code>, <code class="inline">sort</code> y <code class="inline">while</code>.</p>
+    <div class="mision">
+      <p>Tienes los <strong>equipos</strong> (arreglo) y los <strong>puntos por ronda</strong> de cada uno (matriz: cada fila es un equipo). Resuelve en orden:</p>
+      <ol>
+        <li>Muestra <strong>cuántos equipos</strong> compiten.</li>
+        <li>Con <code class="inline">for</code> <strong>anidado</strong>, calcula el <strong>total de puntos</strong> de cada equipo (la suma de su fila) y guárdalos en un arreglo <code class="inline">totales</code>. Muestra "equipo: total".</li>
+        <li>Muestra el arreglo <code class="inline">totales</code>.</li>
+        <li>Calcula el <strong>promedio</strong> general de los totales.</li>
+        <li>Con <code class="inline">filter</code>, lista los totales que <strong>superan el promedio</strong>.</li>
+        <li>Muestra el <strong>ranking</strong> de totales <strong>de mayor a menor</strong> (<code class="inline">sort</code>).</li>
+        <li>Muestra el nombre del <strong>campeón</strong> (el del total más alto).</li>
+        <li>Con <code class="inline">while</code>: reparte premios de <strong>$30</strong> desde un fondo de <strong>$100</strong> mientras alcance. Muestra cuánto queda tras cada premio y cuántos se entregaron.</li>
+      </ol>
+    </div>
+    <details class="hint">
+      <summary>¿Necesitas una pista?</summary>
+      <ul>
+        <li><strong>Paso 2:</strong> el for externo recorre equipos; dentro, una variable <code class="inline">suma = 0</code> (reiniciada por equipo), el for interno suma su fila, y al terminar haces <code class="inline">totales.push(suma)</code>. Para el nombre usa <code class="inline">equipos[i]</code>.</li>
+        <li><strong>Paso 4:</strong> promedio con <code class="inline">reduce</code> (o for) dividido por <code class="inline">totales.length</code>.</li>
+        <li><strong>Paso 5:</strong> <code class="inline">totales.filter(t =&gt; t &gt; promedio)</code>.</li>
+        <li><strong>Paso 6:</strong> ordena una COPIA para no dañar el original: <code class="inline">[...totales].sort((a, b) =&gt; b - a)</code>.</li>
+        <li><strong>Paso 7:</strong> <code class="inline">Math.max(...totales)</code> te da el mayor; con <code class="inline">indexOf</code> sacas su posición y la usas en <code class="inline">equipos</code>.</li>
+        <li><strong>Paso 8:</strong> <code class="inline">while (fondo &gt;= 30) { fondo = fondo - 30; premios++; ... }</code>.</li>
+      </ul>
+    </details>
+    <div class="starter">
+      <div class="lab-head"><div class="dots"><span></span><span></span><span></span></div><span class="fname">liga-final.js — punto de partida</span></div>
+<pre class="code">let equipos = ["Dragones", "Fénix", "Tigres"];
+let puntos = [
+  [10, 20, 15],   // Dragones
+  [30, 20, 25],   // Fénix
+  [5, 40, 20]     // Tigres
+];
+
+// Tu tarea (resuélvela en este archivo, paso a paso):
+// 1) Muestra cuántos equipos compiten
+// 2) Con for ANIDADO: total de puntos de cada equipo -> arreglo "totales"
+// 3) Muestra el arreglo "totales"
+// 4) Calcula el PROMEDIO general de los totales
+// 5) Con filter: totales que superan el promedio
+// 6) Ranking de totales de mayor a menor (sort)
+// 7) Nombre del CAMPEÓN (el del total más alto)
+// 8) Con while: reparte premios de $30 desde un fondo de $100</pre>
+    </div>
+    <div class="goal">
+      <pre>Equipos: 3
+Dragones: 45
+Fénix: 75
+Tigres: 65
+Totales: [ 45, 75, 65 ]
+Promedio general: 61.67
+Sobre el promedio: [ 75, 65 ]
+Ranking: [ 75, 65, 45 ]
+🏆 Campeón: Fénix
+Premio entregado, queda $70
+Premio entregado, queda $40
+Premio entregado, queda $10
+Premios entregados: 3 (sobran $10)</pre>
+      <p class="nota">Si te dan estos valores, dominas TODA la lección. Las etiquetas de texto las eliges tú.</p>
+    </div>
+    <label class="done"><input type="checkbox"><span class="txt-off">¿Venciste al Jefe Final? Márcalo aquí</span><span class="txt-on">🏆 ¡JEFE FINAL DERROTADO!</span></label>
+  </section>
+
+  <!-- ===================== CHECKLIST DE ENTREGA ===================== -->
+  <div class="checklist">
+    <h2>📦 Antes de entregar, revisa que…</h2>
+    <p>Marca cada punto cuando lo tengas listo.</p>
+    <label><input type="checkbox"> Tengo una carpeta con el <code class="inline">index.html</code> y los 10 archivos <code class="inline">.js</code>.</label>
+    <label><input type="checkbox"> Cada reto está resuelto en su propio archivo (<code class="inline">reto-1.js</code> … <code class="inline">liga-final.js</code>).</label>
+    <label><input type="checkbox"> Probé la página y los resultados coinciden con cada <em>"Deberías ver algo así"</em>.</label>
+    <label><input type="checkbox"> Subí la carpeta a un repositorio <strong>público</strong> en GitHub.</label>
+    <label><input type="checkbox"> Activé <strong>GitHub Pages</strong> y mi enlace abre sin errores.</label>
+    <label><input type="checkbox"> Al abrir el enlace y presionar <code class="inline">F12</code> → Console, se ven los resultados.</label>
+    <label><input type="checkbox"> <strong>Entrego el enlace de GitHub Pages</strong> (y, si lo piden, el del repositorio).</label>
+  </div>
+
+  <p style="margin-top:40px"><a class="back-top" href="#">↑ Volver al inicio</a></p>
+
+  <footer>
+    🏅 Arcade del Código — Módulo 4 · Lección 03 · Repaso final (Arreglos y Ciclos)<br>
+    No te quedes en la primera idea: prueba, equivócate, corrige. Así se programa de verdad.
+  </footer>
+
+</div>
+
+<script>
+  /* ============================================================
+     Contador de misiones cumplidas según los checkboxes de cada reto.
+     (El trabajo de programación lo hacen en SUS archivos .js, no aquí.)
+     ============================================================ */
+  (function () {
+    "use strict";
+    var checks = document.querySelectorAll('.done input[type="checkbox"]');
+    var contador = document.getElementById('contador');
+    function actualizar() {
+      var hechas = 0;
+      checks.forEach(function (c) { if (c.checked) hechas++; });
+      if (contador) contador.textContent = hechas;
+    }
+    checks.forEach(function (c) { c.addEventListener('change', actualizar); });
+    actualizar();
+  })();
+</script>
+</body>
+</html>
